@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-dark: #50688a;
+  --color-brand: #6482ad;
+  --color-brand-light: #7fa1c3;
+  --color-surface-dark: #e2dad6;
+  --color-surface: #f5eded;
+}
+
+:root {
+  background-color: var(--color-surface);
+}
