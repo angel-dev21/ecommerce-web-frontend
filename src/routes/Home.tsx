@@ -1,5 +1,13 @@
-function Home() {
-  return <div></div>;
-}
+import MainLayout from "../layouts/MainLayout";
+
+const Home = () => {
+  return (
+    <>
+      <MainLayout>
+        <></>
+      </MainLayout>
+    </>
+  );
+};
 
 export default Home;
