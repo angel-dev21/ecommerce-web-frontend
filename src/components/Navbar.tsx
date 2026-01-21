@@ -2,49 +2,32 @@ import { Link } from "react-router";
 import { FaShoppingCart, FaUser, FaReact } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { AiFillProduct } from "react-icons/ai";
-//import { IoMdArrowDropdown } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
 import AuthMenu from "./AuthMenu";
+import useAuth from "../hooks/useAuth";
+import ProfileMenu from "./ProfileMenu";
 
 const Navbar = () => {
+  const { isLogged, username } = useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [showUserCard, setShowUserCard] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
-  const [username, setUsername] = useState("");
+  const [showAuthMenu, setShowAuthMenu] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const burgerRef = useOnClickOutside(() => {
     if (isOpen) setIsOpen(false);
   });
 
-  const userCardRef = useOnClickOutside(() => {
-    if (showUserCard) setShowUserCard(false);
+  const authMenuRef = useOnClickOutside(() => {
+    if (showAuthMenu) setShowAuthMenu(false);
   });
 
-  const handleLogin = () => {
-    fetch("http://localhost:8080/users/username", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.text();
-        }
-      })
-      .then((data) => {
-        if (data) {
-          setUsername(data);
-          setIsLogged(true);
-        }
-      });
-  };
-
-  useEffect(() => {
-    handleLogin();
-  }, []);
+  const profileMenuRef = useOnClickOutside(() => {
+    if (showProfileMenu) setShowProfileMenu(false);
+  });
 
   return (
     <nav className="w-full h-full p-8 flex flex-row justify-between items-center bg-brand text-surface font-semibold">
@@ -81,18 +64,27 @@ const Navbar = () => {
           />
         </Link>
         {isLogged ? (
-          <div
-            className="flex items-center text-lg"
-            aria-label="View user information"
-          >
-            Hello, {username}
-            {/*<IoMdArrowDropdown size={28} />*/}
+          <div ref={profileMenuRef}>
+            <button
+              className="hover:cursor-pointer"
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+            >
+              <div
+                className="flex items-center text-lg"
+                aria-label="View user information"
+              >
+                Hello, {username}
+                {<IoMdArrowDropdown size={28} />}
+              </div>
+            </button>
+
+            {showProfileMenu && <ProfileMenu />}
           </div>
         ) : (
-          <div ref={userCardRef}>
+          <div ref={authMenuRef}>
             <button
               className="hover:cursor-pointer flex items-center"
-              onClick={() => setShowUserCard(!showUserCard)}
+              onClick={() => setShowAuthMenu(!showAuthMenu)}
             >
               <FaUser
                 className="hover:text-white"
@@ -100,7 +92,7 @@ const Navbar = () => {
                 size={32}
               />
             </button>
-            {showUserCard && <AuthMenu handleLogin={handleLogin} />}
+            {showAuthMenu && <AuthMenu />}
           </div>
         )}
       </div>

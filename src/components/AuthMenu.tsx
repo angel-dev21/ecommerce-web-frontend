@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import useAuth from "../hooks/useAuth";
 
-interface UserCardProps {
-  handleLogin: () => void;
-}
+const AuthMenu = () => {
+  const { handleLogin } = useAuth();
 
-const AuthMenu = ({ handleLogin }: UserCardProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
