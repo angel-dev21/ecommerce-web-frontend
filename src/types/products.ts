@@ -17,6 +17,14 @@ interface IProduct {
   productSkuDto: Array<IProductSku>;
 }
 
+interface IProductDetail {
+  id: number;
+  name: string;
+  brand: string;
+  description: string;
+  productSkuDto: Array<IProductSku>;
+}
+
 interface IProductSku {
   id: number;
   price: number;
@@ -41,6 +49,7 @@ interface IProductCardProps {
 export type {
   IProductData,
   IProduct,
+  IProductDetail,
   IProductSku,
   IProductAttribute,
   IProductCardProps,
